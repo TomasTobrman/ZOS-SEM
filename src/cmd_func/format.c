@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-rc cmd_func_format(fat *fs, uint32_t *cluster, uint8_t argc, char **argv) {
+rc cmd_func_format(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     if (argc != 2) return ERR_ARGC;
     if (!fs) return ERR_INTERN;
 

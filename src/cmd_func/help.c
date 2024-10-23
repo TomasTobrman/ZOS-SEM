@@ -2,7 +2,7 @@
 
 #include <stdio.h>
 
-rc cmd_func_help(fat *fs, uint32_t *cluster, uint8_t argc, char **argv) {
+rc cmd_func_help(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     if (argc != 1) return ERR_ARGC;
     fprintf(stdout, "Commands:"
          "\n  cat      <file>          Print the contents of a file."

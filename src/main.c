@@ -37,7 +37,7 @@ int main(int argc, char **argv) {
     bool running             = true;
     bool cmd_valid           = false;
 
-    fat *fs                  = 0;
+    file_system *fs          = 0;
     uint32_t cc              = 0;
 
     char buffer[BUFFER_SIZE] = {0};
@@ -62,7 +62,7 @@ int main(int argc, char **argv) {
         // {.cmd="info"  , .func=cmd_func_info  },
         // {.cmd="load"  , .func=cmd_func_load  },
         // {.cmd="ls"    , .func=cmd_func_ls    },
-        // {.cmd="mkdir" , .func=cmd_func_mkdir },
+        {.cmd="mkdir" , .func=cmd_func_mkdir },
         // {.cmd="mv"    , .func=cmd_func_mv    },
         // {.cmd="outcp" , .func=cmd_func_outcp },
         // {.cmd="pwd"   , .func=cmd_func_pwd   },

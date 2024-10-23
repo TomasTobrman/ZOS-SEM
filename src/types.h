@@ -16,12 +16,14 @@ typedef enum {
     ERR_OPEN        = 1 <<  3,
     ERR_READ        = 1 <<  4,
     ERR_WRITE       = 1 <<  5,
+    ERR_EXISTS      = 1 <<  6,
 
-    ERR_FULL        = 1 <<  6,
-    ERR_MEMORY      = 1 <<  7,
+    ERR_FULL        = 1 <<  7,
+    ERR_MEMORY      = 1 <<  8,
 
-    ERR_FAT         = 1 << 12,
-    ERR_INTERN      = 1 << 13,
+    ERR_FILE        = 1 << 12,
+    ERR_FAT         = 1 << 13,
+    ERR_INTERN      = 1 << 14,
 
     CMD_EXIT        = 1 << 15
 } rc;
@@ -39,6 +41,8 @@ typedef enum {
 #define FAT_FILE_END     0xFFFFFFFD
 #define FAT_BAD_CLUSTER  0xFFFFFFFC
 
+#define FAT_DIRECTORY    0x70000000
+
 #define FAT_SIGNATURE_SIZE 9
 #define FAT_ITEM_NAME_SIZE 13
 
@@ -49,44 +53,40 @@ typedef struct {
     uint32_t cluster_count;
     uint32_t fat_start_address;
     uint32_t data_start_address;
-} fat_desc;
+} header;
 
 typedef struct {
-    char          item_name[FAT_ITEM_NAME_SIZE];
-    uint8_t       isFile;
-    uint32_t      size;
+    char          name[FAT_ITEM_NAME_SIZE];
+    uint32_t      size; // is_directory = size & FAT_DIRECTORY
     uint32_t      start_cluster;
-} fat_item;
+} file_item;
 
 typedef struct {
     FILE       *file;
     const char *filepath;
-    uint32_t    header_size;
-    uint32_t    table_size;
-    uint32_t    data_size;
-    fat_desc    desc;
-} fat;
+    header      header;
+} file_system;
 
 /* ---- COMMANDS ---- */
-typedef rc(cmd_func)(fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_cat     (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_cd      (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_cp      (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_format  (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_incp    (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_info    (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_load    (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_ls      (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_mkdir   (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_mv      (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_outcp   (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_pwd     (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_rm      (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_rmdir   (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_defrag  (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_clear   (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_exit    (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
-rc cmd_func_help    (fat *fs, uint32_t *cluster, uint8_t argc, char **argv);
+typedef rc(cmd_func)(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_cat     (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_cd      (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_cp      (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_format  (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_incp    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_info    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_load    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_ls      (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_mkdir   (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_mv      (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_outcp   (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_pwd     (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_rm      (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_rmdir   (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_defrag  (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_clear   (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_exit    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_help    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
 
 typedef struct {
     const char *cmd;
