@@ -29,8 +29,5 @@ rc cmd_func_format(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv
     }
     if (size < (2 * KILOBYTE) || size > GIGABYTE) return ERR_ARGV;
 
-    rc rc = fat_format(fs, size);
-    if (rc != SUCCESS) return rc;
-
-    return SUCCESS;
+    return fat_format(fs, size);
 }

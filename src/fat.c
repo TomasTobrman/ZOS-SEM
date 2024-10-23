@@ -179,3 +179,35 @@ rc fat_mkdir(file_system *fs, uint32_t parent, const char *name) {
 
     return SUCCESS;
 }
+
+rc fat_ls(file_system *fs, uint32_t parent, const char *path, bool show_hidden, bool show_list) {
+    if (!fs) return ERR_INTERN;
+    if (!fs->file) return ERR_INTERN;
+
+    // variables
+    bool success    = false;
+    uint32_t i      = 0;
+    file_item vItem = {0};
+
+    // TODO: parse path
+    uint32_t cluster = parent;
+
+    fseek(fs->file, fs->header.data_start_address + cluster * fs->header.cluster_size, SEEK_SET);
+    for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
+        success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
+        if (!success) return ERR_FAT | ERR_READ;
+        if (!vItem.name[0]) continue;
+        if (!show_hidden && vItem.name[0] == '.') continue;
+
+        bool is_dir = vItem.size == FAT_DIRECTORY;
+
+        if (show_list) {
+            printf("%c  %9u  %s%s%s\n", is_dir ? 'd' : '-', is_dir ? (uint32_t)sizeof(file_item) : vItem.size, is_dir ? "\033[1;34m" : "", vItem.name, "\033[0m");
+        } else {
+            printf("%s%s%s  ", vItem.size == FAT_DIRECTORY ? "\033[1;34m" : "", vItem.name, "\033[0m");
+        }
+    }
+    if (!show_list) printf("\n");
+
+    return SUCCESS;
+}

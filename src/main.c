@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
         // {.cmd="incp"  , .func=cmd_func_incp  },
         // {.cmd="info"  , .func=cmd_func_info  },
         // {.cmd="load"  , .func=cmd_func_load  },
-        // {.cmd="ls"    , .func=cmd_func_ls    },
+        {.cmd="ls"    , .func=cmd_func_ls    },
         {.cmd="mkdir" , .func=cmd_func_mkdir },
         // {.cmd="mv"    , .func=cmd_func_mv    },
         // {.cmd="outcp" , .func=cmd_func_outcp },

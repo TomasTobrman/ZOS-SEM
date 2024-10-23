@@ -37,11 +37,10 @@ typedef enum {
 #define BUFFER_SIZE   64
 
 /* ---- FAT ---- */
-#define FAT_UNUSED       0xFFFFFFFE
-#define FAT_FILE_END     0xFFFFFFFD
-#define FAT_BAD_CLUSTER  0xFFFFFFFC
-
-#define FAT_DIRECTORY    0x70000000
+#define FAT_DIRECTORY      0xFFFFFFFF
+#define FAT_UNUSED         0xFFFFFFFE
+#define FAT_FILE_END       0xFFFFFFFD
+#define FAT_BAD_CLUSTER    0xFFFFFFFC
 
 #define FAT_SIGNATURE_SIZE 9
 #define FAT_ITEM_NAME_SIZE 13
@@ -57,7 +56,7 @@ typedef struct {
 
 typedef struct {
     char          name[FAT_ITEM_NAME_SIZE];
-    uint32_t      size; // is_directory = size & FAT_DIRECTORY
+    uint32_t      size; // size == FAT_DIRECTORY ? directory : file
     uint32_t      start_cluster;
 } file_item;
 

@@ -8,8 +8,5 @@ rc cmd_func_mkdir(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv)
     // TODO: check name validity
     // TODO: check for existing file name
 
-    rc rc = fat_mkdir(fs, *cluster, argv[1]);
-    if (rc != SUCCESS) return rc;
-
-    return SUCCESS;
+    return fat_mkdir(fs, *cluster, argv[1]);
 }
