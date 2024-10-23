@@ -11,10 +11,6 @@ static void usage(const char *msg) {
     fprintf(stderr, "tfs: %s\nusage: tfs <fs>\n  <fs>    File-System file path.\n", msg);
 }
 
-static void prompt(const char *username, const char *hostname, const char *cwd) {
-    printf("[%s@%s %s]$ ", username, hostname, cwd);
-}
-
 int main(int argc, char **argv) {
     /* ---- check arguments ---- */
     if (argc < 2) {
@@ -49,13 +45,12 @@ int main(int argc, char **argv) {
 
     const char *username     = getlogin();
     const char *hostname     = "tfs";
-    char       *cwd          = "/";
 
     /* ---- commands ---- */
     command cmds[] = {
         /* ---- default commands ---- */
         // {.cmd="cat"   , .func=cmd_func_cat   },
-        // {.cmd="cd"    , .func=cmd_func_cd    },
+        {.cmd="cd"    , .func=cmd_func_cd    },
         // {.cmd="cp"    , .func=cmd_func_cp    },
         {.cmd="format", .func=cmd_func_format},
         // {.cmd="incp"  , .func=cmd_func_incp  },
@@ -72,6 +67,7 @@ int main(int argc, char **argv) {
         // {.cmd="defrag", .func=cmd_func_defrag},
         /* ---- custom commands ---- */
         {.cmd="clear" , .func=cmd_func_clear },
+        {.cmd="cwd"   , .func=cmd_func_cwd   },
         {.cmd="exit"  , .func=cmd_func_exit  },
         {.cmd="help"  , .func=cmd_func_help  },
     };
@@ -83,9 +79,13 @@ int main(int argc, char **argv) {
 
     /* ---- loop ---- */
     while (running) {
+        // prompt
+        printf("[%s@%s ", username, hostname);
+        cmd_func_cwd(fs, &cc, 1, NULL);
+        printf("]$ ");
+
         // get user input
         memset(buffer, 0, BUFFER_SIZE);
-        prompt(username, hostname, cwd);
         for (i = 0; i < BUFFER_SIZE; i++) {
             in_c = getchar();
             if (in_c == '\n' || in_c == EOF) break;

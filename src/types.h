@@ -84,6 +84,7 @@ rc cmd_func_rm      (file_system *fs, uint32_t *cluster, uint8_t argc, char **ar
 rc cmd_func_rmdir   (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
 rc cmd_func_defrag  (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
 rc cmd_func_clear   (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
+rc cmd_func_cwd     (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
 rc cmd_func_exit    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
 rc cmd_func_help    (file_system *fs, uint32_t *cluster, uint8_t argc, char **argv);
 

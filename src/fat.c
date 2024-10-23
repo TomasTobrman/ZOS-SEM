@@ -187,6 +187,7 @@ rc fat_ls(file_system *fs, uint32_t parent, const char *path, bool show_hidden, 
     // variables
     bool success    = false;
     uint32_t i      = 0;
+    uint32_t j      = 0;
     file_item vItem = {0};
 
     // TODO: parse path
@@ -201,13 +202,15 @@ rc fat_ls(file_system *fs, uint32_t parent, const char *path, bool show_hidden, 
 
         bool is_dir = vItem.size == FAT_DIRECTORY;
 
+        j++;
+
         if (show_list) {
             printf("%c  %9u  %s%s%s\n", is_dir ? 'd' : '-', is_dir ? (uint32_t)sizeof(file_item) : vItem.size, is_dir ? "\033[1;34m" : "", vItem.name, "\033[0m");
         } else {
             printf("%s%s%s  ", vItem.size == FAT_DIRECTORY ? "\033[1;34m" : "", vItem.name, "\033[0m");
         }
     }
-    if (!show_list) printf("\n");
+    if (j && !show_list) printf("\n");
 
     return SUCCESS;
 }
