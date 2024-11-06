@@ -60,14 +60,13 @@ int main(int argc, char **argv) {
         {.cmd="mkdir" , .func=cmd_func_mkdir },
         // {.cmd="mv"    , .func=cmd_func_mv    },
         // {.cmd="outcp" , .func=cmd_func_outcp },
-        // {.cmd="pwd"   , .func=cmd_func_pwd   },
+        {.cmd="pwd"   , .func=cmd_func_pwd   },
         // {.cmd="rm"    , .func=cmd_func_rm    },
         // {.cmd="rmdir" , .func=cmd_func_rmdir },
         /* ---- additional commands ---- */
         // {.cmd="defrag", .func=cmd_func_defrag},
         /* ---- custom commands ---- */
         {.cmd="clear" , .func=cmd_func_clear },
-        {.cmd="cwd"   , .func=cmd_func_cwd   },
         {.cmd="exit"  , .func=cmd_func_exit  },
         {.cmd="help"  , .func=cmd_func_help  },
     };

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "utils.h"
 #include "fat.h"
 
 #include <stdint.h>
@@ -211,6 +212,38 @@ rc fat_ls(file_system *fs, uint32_t parent, const char *path, bool show_hidden, 
         }
     }
     if (j && !show_list) printf("\n");
+
+    return SUCCESS;
+}
+
+rc fat_cwd(file_system *fs, uint32_t *cluster, char *buffer) {
+    // variables
+    bool success    = false;
+    uint32_t i      = 0;
+    file_item vItem = {0};
+
+    uint32_t par_cluster = 0;
+
+    // find parent cluster
+    fseek(fs->file, fs->header.data_start_address + (*cluster) * fs->header.cluster_size, SEEK_SET);
+    for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
+        success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
+        if (!success) return ERR_FAT | ERR_READ;
+
+        if (!strcmp(vItem.name, ".."))
+            par_cluster = vItem.start_cluster;
+    }
+
+    // find current directory in parent
+    fseek(fs->file, fs->header.data_start_address + par_cluster * fs->header.cluster_size, SEEK_SET);
+    for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
+        success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
+        if (!success) return ERR_FAT | ERR_READ;
+        if (vItem.start_cluster == *cluster) break;
+    }
+
+    strcpy(buffer, vItem.name);
+    *cluster = par_cluster;
 
     return SUCCESS;
 }

@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "types.h"
 
+#include <stddef.h>
 #include <stdio.h>
 #include <ctype.h>
 #include <string.h>
@@ -44,4 +45,10 @@ char *trimwhitespace(char *str) {
     end[1] = '\0';
 
     return str;
+}
+
+void prepend(char *s, const char *t) {
+    size_t len = strlen(t);
+    memmove(s + len, s, strlen(s) + 1);
+    memcpy(s, t, len);
 }
