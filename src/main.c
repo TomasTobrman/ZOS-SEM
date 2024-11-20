@@ -44,6 +44,7 @@ int main(int argc, char **argv) {
     char *args[ARGS_SIZE]    = {0};
 
     const char *username     = getlogin();
+    if (!username) username = "user";
     const char *hostname     = "tfs";
 
     /* ---- commands ---- */
@@ -62,7 +63,7 @@ int main(int argc, char **argv) {
         // {.cmd="outcp" , .func=cmd_func_outcp },
         {.cmd="pwd"   , .func=cmd_func_pwd   },
         // {.cmd="rm"    , .func=cmd_func_rm    },
-        // {.cmd="rmdir" , .func=cmd_func_rmdir },
+        {.cmd="rmdir" , .func=cmd_func_rmdir },
         /* ---- additional commands ---- */
         // {.cmd="defrag", .func=cmd_func_defrag},
         /* ---- custom commands ---- */

@@ -8,24 +8,30 @@
 
 void report_rc(const char *reporter, rc rc) {
     if (rc & ERR_ARGC)
-        fprintf(stderr, "\"%s\": wrong number of arguments.\n  try running the \"help\" command.\n", reporter);
+        fprintf(stderr, "%s: wrong number of arguments.\n  try running the \"help\" command.\n", reporter);
     if (rc & ERR_ARGV)
-        fprintf(stderr, "\"%s\": invalid arguments.\n  try running the \"help\" command.\n", reporter);
+        fprintf(stderr, "%s: invalid arguments.\n  try running the \"help\" command.\n", reporter);
 
     if (rc & ERR_READ)
-        fprintf(stderr, "\"%s\": could not read from file.\n", reporter);
+        fprintf(stderr, "%s: could not read from file.\n", reporter);
     if (rc & ERR_WRITE)
-        fprintf(stderr, "\"%s\": could not write into file.\n", reporter);
+        fprintf(stderr, "%s: could not write into file.\n", reporter);
+
+    if (rc & ERR_NOEMPTY)
+        fprintf(stderr, "%s: directory is not empty.\n", reporter);
+
+    if (rc & ERR_CMD && rc & ERR_NOEXISTS)
+        fprintf(stderr, "%s: No such file or directory\n", reporter);
 
     if (rc & ERR_FAT && rc & ERR_CREATE)
-        fprintf(stderr, "\"%s\": could not create DAT file.\n", reporter);
+        fprintf(stderr, "%s: could not create DAT file.\n", reporter);
     if (rc & ERR_FAT && rc & ERR_OPEN)
-        fprintf(stderr, "\"%s\": could not open DAT file.\n  try running the \"format\" command to create it.\n", reporter);
+        fprintf(stderr, "%s: could not open DAT file.\n  try running the \"format\" command to create it.\n", reporter);
     if (rc & ERR_FAT && rc & ERR_FULL)
-        fprintf(stderr, "\"%s\": file-system is full.\n", reporter);
+        fprintf(stderr, "%s: file-system is full.\n", reporter);
 
     if (rc & ERR_INTERN && rc & ERR_MEMORY)
-        fprintf(stderr, "\"%s\": internal memory error.\n", reporter);
+        fprintf(stderr, "%s: internal memory error.\n", reporter);
 }
 
 char *trimwhitespace(char *str) {

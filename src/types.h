@@ -17,15 +17,19 @@ typedef enum {
     ERR_READ        = 1 <<  4,
     ERR_WRITE       = 1 <<  5,
     ERR_EXISTS      = 1 <<  6,
+    ERR_NOEXISTS    = 1 <<  7,
 
-    ERR_FULL        = 1 <<  7,
-    ERR_MEMORY      = 1 <<  8,
+    ERR_FULL        = 1 <<  8,
+    ERR_MEMORY      = 1 <<  9,
 
-    ERR_FILE        = 1 << 12,
-    ERR_FAT         = 1 << 13,
-    ERR_INTERN      = 1 << 14,
+    ERR_NOEMPTY     = 1 << 10,
 
-    CMD_EXIT        = 1 << 15
+    ERR_CMD         = 1 << 26,
+    ERR_FILE        = 1 << 27,
+    ERR_FAT         = 1 << 28,
+    ERR_INTERN      = 1 << 29,
+
+    CMD_EXIT        = 1 << 30
 } rc;
 
 /* ---- SIZE ---- */
