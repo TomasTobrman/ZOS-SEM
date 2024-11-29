@@ -39,6 +39,7 @@ typedef enum {
 
 #define ARGS_SIZE     4
 #define BUFFER_SIZE   64
+#define MAX_PATH_NUM  32
 
 /* ---- FAT ---- */
 #define FAT_DIRECTORY      0xFFFFFFFF

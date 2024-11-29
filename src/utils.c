@@ -58,3 +58,20 @@ void prepend(char *s, const char *t) {
     memmove(s + len, s, strlen(s) + 1);
     memcpy(s, t, len);
 }
+
+int parse_path(char *path, char result[MAX_PATH_NUM][BUFFER_SIZE]) {
+    int i = 0, j = 0;
+    char *str = 0;
+
+    str = strtok(path, "/");
+    while (str != 0 && i < 32) {
+        if (!str[0]) continue; // empty
+        int len = strlen(str);
+        for (j = 0; j < len && j < BUFFER_SIZE; j++)
+            result[i][j] = str[j];
+        i++;
+        str = strtok(0, "/");
+    }
+
+    return i;
+}

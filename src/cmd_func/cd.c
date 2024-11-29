@@ -1,6 +1,9 @@
 #include "../types.h"
+#include "utils.h"
 
 #include <string.h>
+
+static rc _cd(file_system *fs, uint32_t *cluster, char *path);
 
 rc cmd_func_cd(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     if (argc > 2) return ERR_ARGC;
@@ -15,6 +18,23 @@ rc cmd_func_cd(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
         return SUCCESS;
     }
 
+    char path_arr[MAX_PATH_NUM][BUFFER_SIZE] = {0};
+    int i = parse_path(path, path_arr);
+    int j = 0;
+    uint32_t cls = *cluster;
+
+    if (path_arr[0][0] == '/') cls = 0;
+
+    for (j = 0; j < i; j++) {
+        rc rc = _cd(fs, &cls, path_arr[j]);
+        if (rc != SUCCESS) return rc;
+    }
+
+    *cluster = cls;
+    return SUCCESS;
+}
+
+rc _cd(file_system *fs, uint32_t *cluster, char *path) {
     // variables
     bool success    = false;
     uint32_t i      = 0;

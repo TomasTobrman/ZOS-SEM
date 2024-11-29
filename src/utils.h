@@ -9,3 +9,5 @@ char *trimwhitespace(char *str);
 
 /** @author Eli Bendersky, Toby Speight (StackOverflow) */
 void prepend(char *s, const char *t);
+
+int parse_path(char *path, char result[32][BUFFER_SIZE]);
