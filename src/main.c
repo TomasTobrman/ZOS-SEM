@@ -50,7 +50,7 @@ int main(int argc, char **argv) {
     /* ---- commands ---- */
     command cmds[] = {
         /* ---- default commands ---- */
-        // {.cmd="cat"   , .func=cmd_func_cat   },
+        {.cmd="cat"   , .func=cmd_func_cat   },
         {.cmd="cd"    , .func=cmd_func_cd    },
         // {.cmd="cp"    , .func=cmd_func_cp    },
         {.cmd="format", .func=cmd_func_format},
