@@ -54,7 +54,7 @@ int main(int argc, char **argv) {
         {.cmd="cd"    , .func=cmd_func_cd    },
         // {.cmd="cp"    , .func=cmd_func_cp    },
         {.cmd="format", .func=cmd_func_format},
-        // {.cmd="incp"  , .func=cmd_func_incp  },
+        {.cmd="incp"  , .func=cmd_func_incp  },
         // {.cmd="info"  , .func=cmd_func_info  },
         // {.cmd="load"  , .func=cmd_func_load  },
         {.cmd="ls"    , .func=cmd_func_ls    },
