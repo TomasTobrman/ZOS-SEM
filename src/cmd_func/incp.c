@@ -99,7 +99,7 @@ rc cmd_func_incp(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) 
         vItem.size = file_size;
         vItem.start_cluster = clusters[0];
 
-        fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size + i - sizeof(file_item), SEEK_SET);
+        fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size + i, SEEK_SET);
         success = fwrite(&vItem, sizeof(file_item), 1, fs->file) == 1;
         if (!success) {
             // close input file
