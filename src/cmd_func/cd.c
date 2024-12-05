@@ -44,12 +44,12 @@ rc _cd(file_system *fs, uint32_t *cluster, char *path) {
     fseek(fs->file, fs->header.data_start_address + (*cluster) * fs->header.cluster_size, SEEK_SET);
     for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
         success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
-        if (!success) return ERR_FAT | ERR_READ;
-        if (!vItem.name[0]) continue;
-        if (!strcmp(path, vItem.name)) {
-            *cluster = vItem.start_cluster;
-            return SUCCESS;
-        }
+        if (!success) return ERR_FAT | ERR_READ; // could an entry be read
+        if (!vItem.name[0]) continue;            // does entry have a name
+        if (strcmp(path, vItem.name)) continue;  // does entry name match
+        if (vItem.size != FAT_DIRECTORY) break;  // is entry a directory
+        *cluster = vItem.start_cluster;
+        return SUCCESS;
     }
 
     return ERR_ARGV;
