@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
         {.cmd="ls"    , .func=cmd_func_ls    },
         {.cmd="mkdir" , .func=cmd_func_mkdir },
         // {.cmd="mv"    , .func=cmd_func_mv    },
-        // {.cmd="outcp" , .func=cmd_func_outcp },
+        {.cmd="outcp" , .func=cmd_func_outcp },
         {.cmd="pwd"   , .func=cmd_func_pwd   },
         // {.cmd="rm"    , .func=cmd_func_rm    },
         {.cmd="rmdir" , .func=cmd_func_rmdir },
