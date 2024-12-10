@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
         /* ---- default commands ---- */
         {.cmd="cat"   , .func=cmd_func_cat   },
         {.cmd="cd"    , .func=cmd_func_cd    },
-        // {.cmd="cp"    , .func=cmd_func_cp    },
+        {.cmd="cp"    , .func=cmd_func_cp    },
         {.cmd="format", .func=cmd_func_format},
         {.cmd="incp"  , .func=cmd_func_incp  },
         {.cmd="info"  , .func=cmd_func_info  },
