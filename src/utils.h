@@ -11,3 +11,5 @@ char *trimwhitespace(char *str);
 void prepend(char *s, const char *t);
 
 int parse_path(char *path, char result[32][BUFFER_SIZE]);
+
+rc parse_command(file_system *fs, uint32_t *cluster, char *buffer);

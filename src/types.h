@@ -97,4 +97,3 @@ typedef struct {
     const char *cmd;
     cmd_func *func;
 } command;
-
