@@ -1,4 +1,5 @@
 #include "types.h"
+#include "utils.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -15,7 +16,15 @@ rc cmd_func_info(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) 
     uint32_t cls    = 0;
     file_item vItem = {0};
 
+    int32_t n_path  = 0;
+	rc return_code  = SUCCESS;
+    char path[MAX_PATH_NUM][BUFFER_SIZE] = {0};
+
+	// traverse path (n - 1)
     cls = *cluster;
+    n_path = parse_path(argv[1], path);
+	return_code = traverse(fs, &cls, path, n_path - 1);
+	if (return_code != SUCCESS) return return_code;
 
     // find entry
     fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size, SEEK_SET);
@@ -24,7 +33,7 @@ rc cmd_func_info(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) 
         if (!success) return ERR_FAT | ERR_READ;
 
         if (!vItem.name[0]) continue;
-        if (strcmp(vItem.name, argv[1])) continue;
+        if (strcmp(vItem.name, path[n_path - 1])) continue;
 
         cls = vItem.start_cluster;
         break;

@@ -1,4 +1,5 @@
 #include "types.h"
+#include "utils.h"
 
 #include <string.h>
 
@@ -6,11 +7,6 @@ rc cmd_func_cp(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     if (argc != 3) return ERR_ARGC;
     if (!fs) return ERR_INTERN;
     if (!fs->file) return ERR_FAT | ERR_NOEXISTS;
-
-    // cannot remove "." or ".." or "/" directories
-    if (!strcmp(argv[1], ".")) return ERR_ARGV;
-    if (!strcmp(argv[1], "..")) return ERR_ARGV;
-    if (!strcmp(argv[1], "/")) return ERR_ARGV;
 
     // variables
     bool success          = false;
@@ -24,15 +20,24 @@ rc cmd_func_cp(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     uint32_t clusters[fs->header.cluster_count];
     char buffer[fs->header.cluster_size];
 
+    int32_t n_path        = 0;
+	rc return_code        = SUCCESS;
+    char path[MAX_PATH_NUM][BUFFER_SIZE] = {0};
+
+	// traverse path (n - 1)
+	cls = *cluster;
+	n_path = parse_path(argv[1], path);
+	return_code = traverse(fs, &cls, path, n_path - 1);
+	if (return_code != SUCCESS) return return_code;
+
     // find file by name
-    cls = *cluster;
     fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size, SEEK_SET);
     for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
         success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
         if (!success) return ERR_FAT | ERR_READ;
 
         if (!vItem.name[0]) continue;
-        if (strcmp(vItem.name, argv[1])) continue;
+        if (strcmp(vItem.name, path[n_path - 1])) continue;
         if (vItem.size == FAT_DIRECTORY) return ERR_ARGV;
 
         file_size = vItem.size;
@@ -85,15 +90,20 @@ rc cmd_func_cp(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
         j++;
     }
 
+	// traverse path (n - 1)
+	cls = *cluster;
+	n_path = parse_path(argv[2], path);
+	return_code = traverse(fs, &cls, path, n_path - 1);
+	if (return_code != SUCCESS) return return_code;
+
     // create new out file entry
-    cls = *cluster; // TODO: parse path
     fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size, SEEK_SET);
     for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
         success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
         if (!success) return ERR_FAT | ERR_READ;
         if (vItem.name[0]) continue;
 
-        strcpy(vItem.name, argv[2]);
+        strcpy(vItem.name, path[n_path - 1]);
         vItem.size = file_size;
         vItem.start_cluster = clusters[0];
 

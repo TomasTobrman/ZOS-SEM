@@ -13,3 +13,5 @@ void prepend(char *s, const char *t);
 int parse_path(char *path, char result[32][BUFFER_SIZE]);
 
 rc parse_command(file_system *fs, uint32_t *cluster, char *buffer);
+
+rc traverse(file_system *fs, uint32_t *cluster, char path[MAX_PATH_NUM][BUFFER_SIZE], int n);

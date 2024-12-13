@@ -1,5 +1,5 @@
-#include "../fat.h"
-#include "../types.h"
+#include "fat.h"
+#include "types.h"
 
 #include <stdint.h>
 

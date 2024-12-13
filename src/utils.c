@@ -89,8 +89,11 @@ int parse_path(char *path, char result[MAX_PATH_NUM][BUFFER_SIZE]) {
     int i = 0, j = 0;
     char *str = 0;
 
+	// absolute path
+	if (path[0] == '/') result[i++][0] = '/';
+
     str = strtok(path, "/");
-    while (str != 0 && i < 32) {
+    while (str != 0 && i < MAX_PATH_NUM) {
         if (!str[0]) continue; // empty
         int len = strlen(str);
         for (j = 0; j < len && j < BUFFER_SIZE; j++)
@@ -145,4 +148,40 @@ rc parse_command(file_system *fs, uint32_t *cluster, char *buffer) {
         fprintf(stderr, "\"%s\" is not a valid command.\n", token);
 
     return return_code;
+}
+
+static rc _traverse(file_system *fs, uint32_t *cluster, char *path) {
+    // variables
+    bool success    = false;
+    uint32_t i      = 0;
+    file_item vItem = {0};
+
+    // find directory to cd into in the current cluster
+    fseek(fs->file, fs->header.data_start_address + (*cluster) * fs->header.cluster_size, SEEK_SET);
+    for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
+        success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
+        if (!success) return ERR_FAT | ERR_READ; // could an entry be read
+        if (!vItem.name[0]) continue;            // does entry have a name
+        if (strcmp(path, vItem.name)) continue;  // does entry name match
+        if (vItem.size != FAT_DIRECTORY) break;  // is entry a directory
+        *cluster = vItem.start_cluster;
+        return SUCCESS;
+    }
+
+    return ERR_ARGV;
+}
+
+rc traverse(file_system *fs, uint32_t *cluster, char path[MAX_PATH_NUM][BUFFER_SIZE], int n) {
+	int i = 0;
+
+	if (path[0][0] == '/') {
+		*cluster = 0;
+		i++;
+	}
+
+    for (; i < n; i++) {
+        rc rc = _traverse(fs, cluster, path[i]);
+        if (rc != SUCCESS) return rc;
+    }
+	return SUCCESS;
 }

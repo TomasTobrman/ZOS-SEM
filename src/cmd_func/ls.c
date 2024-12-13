@@ -1,5 +1,5 @@
-#include "../fat.h"
-#include "../types.h"
+#include "types.h"
+#include "utils.h"
 
 rc cmd_func_ls(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     if (argc > 3) return ERR_ARGC;
@@ -14,10 +14,11 @@ rc cmd_func_ls(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
     uint32_t i       = 0;
     uint32_t j       = 0;
     file_item vItem  = {0};
-    // char *path       = argc > 1 ? argv[argc - 1] : ".";
 
-    // TODO: parse path
-    cls = *cluster;
+    int32_t n_path  = 0;
+	char *path_str  = argc > 1 ? argv[argc - 1] : ".";
+	rc return_code  = SUCCESS;
+    char path[MAX_PATH_NUM][BUFFER_SIZE] = {0};
 
     // parse arguments
     if (argc == 1) {
@@ -30,8 +31,14 @@ rc cmd_func_ls(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv) {
             }
         }
 
-        // if (argc == 2) path = ".";
+		if (argc == 2) path_str = ".";
     }
+
+	// traverse path
+    cls = *cluster;
+    n_path = parse_path(path_str, path);
+	return_code = traverse(fs, &cls, path, n_path);
+	if (return_code != SUCCESS) return return_code;
 
     fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size, SEEK_SET);
     for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {

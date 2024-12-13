@@ -1,4 +1,5 @@
 #include "types.h"
+#include "utils.h"
 
 #include <stdint.h>
 #include <stdio.h>
@@ -21,15 +22,23 @@ rc cmd_func_outcp(file_system *fs, uint32_t *cluster, uint8_t argc, char **argv)
     char buffer[fs->header.cluster_size];
     file_item vItem     = {0};
 
-    // find file by name
+    int32_t n_path  = 0;
+	rc return_code  = SUCCESS;
+    char path[MAX_PATH_NUM][BUFFER_SIZE] = {0};
+
+	// traverse path (n - 1)
     cls = *cluster;
-    // TODO: parse path
+    n_path = parse_path(argv[1], path);
+	return_code = traverse(fs, &cls, path, n_path - 1);
+	if (return_code != SUCCESS) return return_code;
+
+    // find file by name
     fseek(fs->file, fs->header.data_start_address + cls * fs->header.cluster_size, SEEK_SET);
     for (i = 0; i < fs->header.cluster_size; i += sizeof(file_item)) {
         success = fread(&vItem, sizeof(file_item), 1, fs->file) == 1;
         if (!success) return ERR_FAT | ERR_READ;          // could an entry be read
         if (!vItem.name[0]) continue;                     // does entry have a name
-        if (strcmp(argv[1], vItem.name)) continue;        // does entry name match
+        if (strcmp(path[n_path - 1], vItem.name)) continue;        // does entry name match
         if (vItem.size == FAT_DIRECTORY) return ERR_ARGV; // is entry a directory
         cls = vItem.start_cluster;
         file_size = vItem.size;
