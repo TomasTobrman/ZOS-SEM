@@ -24,7 +24,7 @@ static command commands[] = {
     {.cmd="rm"    , .func=cmd_func_rm    },
     {.cmd="rmdir" , .func=cmd_func_rmdir },
     /* ---- additional commands ---- */
-    // {.cmd="defrag", .func=cmd_func_defrag},
+    {.cmd="defrag", .func=cmd_func_defrag},
     /* ---- custom commands ---- */
     {.cmd="clear" , .func=cmd_func_clear },
     {.cmd="exit"  , .func=cmd_func_exit  },
