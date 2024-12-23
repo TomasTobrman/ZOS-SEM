@@ -1,0 +1,111 @@
+\documentclass[12pt]{article}
+
+\usepackage[czech]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lingmacros}
+\usepackage{tree-dvips}
+\usepackage{listings}
+\usepackage{xstring}
+\usepackage{xparse}
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage[hidelinks]{hyperref}
+\usepackage{parskip}
+
+\author{\textbf{Tomáš Tobrman}}
+\title{Semestrální práce \textbf{KIV/ZOS}}
+\date{}
+
+\renewcommand*\contentsname{Obsah}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+\newpage
+
+\tableofcontents
+\thispagestyle{empty}
+\newpage
+
+\setcounter{page}{1}
+
+\section{Úvod}
+
+\subsection{Zadání}
+
+Vytvoření konzolového rozhraní s~příkazy pro práci s~pseudosystémem založeným na souborovém systému FAT.
+
+\subsection{Implementace}
+
+Projekt byl implementován v programovacím jazyce C pro operační systémy Linux/Unix.
+Každému příkazu připadá vlastní zdrojový soubor, ve kterém se nachází jeho funkcionalita.
+Pole příkazů je pak definováno ve zdrojovém souboru \texttt{utils.c}, proti kterému se porovnává uživatelský vstup.
+
+\section{Použití}\label{sec:usage}
+
+Před spuštěním programu je třeba zahájit jeho kompilaci.
+Na systémech Linux/Unix je možné tohoto docílit pomocí příkazu \texttt{make}.
+Po úspěšném sestavení program lze spustit z~příkazové řádky ve složce \texttt{bin}.
+
+\subsection{Příkazy}\label{sec:commands}
+
+Tato sekce obsahuje popis a~příklady využití všech příkazů implementovaných v~konzolovém rozhraní.
+
+\subsubsection{\texttt{cat}}\label{sec:cat}
+
+Vypíše obsah souboru.
+
+\texttt{\$ cat file}
+
+Příkaz očekává vždy jeden argument, který je cestou k~souboru, jehož obsah chce uživatel vypsat.
+
+\subsubsection{\texttt{cd}}\label{sec:cd}
+
+Změní cestu aktuálního pracovního adresáře.
+
+\texttt{\$ cd path}
+
+\texttt{\$ cd \/}
+
+\texttt{\$ cd}
+
+Příkaz očekává až jeden argument, který odpovídá cestě do adresáře.
+Pokud není poskytnuta cesta, pracovní adresář je změněn na domácí složku uživatele (v tomto případě kořenový adresář \texttt{\/}).
+
+\subsubsection{\texttt{clear}}\label{sec:clear}
+
+\subsubsection{\texttt{cp}}\label{sec:cp}
+
+\subsubsection{\texttt{defrag}}\label{sec:defrag}
+
+\subsubsection{\texttt{exit}}\label{sec:exit}
+
+\subsubsection{\texttt{format}}\label{sec:format}
+
+\subsubsection{\texttt{help}}\label{sec:help}
+
+\subsubsection{\texttt{incp}}\label{sec:incp}
+
+\subsubsection{\texttt{info}}\label{sec:info}
+
+\subsubsection{\texttt{load}}\label{sec:load}
+
+\subsubsection{\texttt{ls}}\label{sec:ls}
+
+\subsubsection{\texttt{mkdir}}\label{sec:mkdir}
+
+\subsubsection{\texttt{mv}}\label{sec:mv}
+
+\subsubsection{\texttt{outcp}}\label{sec:outcp}
+
+\subsubsection{\texttt{pwd}}\label{sec:pwd}
+
+\subsubsection{\texttt{rm}}\label{sec:rm}
+
+\subsubsection{\texttt{rmdir}}\label{sec:rmdir}
+
+\section{Závěr}
+
+\end{document}
