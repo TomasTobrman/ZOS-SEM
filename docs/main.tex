@@ -39,7 +39,7 @@ Vytvoření konzolového rozhraní s~příkazy pro práci s~pseudosystémem zalo
 
 \subsection{Implementace}
 
-Projekt byl implementován v programovacím jazyce C pro operační systémy Linux/Unix.
+Projekt byl implementován v~programovacím jazyce C~pro operační systémy Linux/Unix.
 Každému příkazu připadá vlastní zdrojový soubor, ve kterém se nachází jeho funkcionalita.
 Pole příkazů je pak definováno ve zdrojovém souboru \texttt{utils.c}, proti kterému se porovnává uživatelský vstup.
 
@@ -72,39 +72,165 @@ Změní cestu aktuálního pracovního adresáře.
 \texttt{\$ cd}
 
 Příkaz očekává až jeden argument, který odpovídá cestě do adresáře.
-Pokud není poskytnuta cesta, pracovní adresář je změněn na domácí složku uživatele (v tomto případě kořenový adresář \texttt{\/}).
+Pokud není poskytnuta cesta, pracovní adresář je změněn na domácí složku uživatele (v~tomto případě kořenový adresář \texttt{\/}).
 
 \subsubsection{\texttt{clear}}\label{sec:clear}
 
+Vyčistí obrazovku terminálu a~položí kurzor na první řádek.
+
+\texttt{\$ clear}
+
+Příkaz neočekává žádné argumenty.
+
 \subsubsection{\texttt{cp}}\label{sec:cp}
+
+Vytvoří kopii souboru.
+
+\texttt{\$ cp source destination}
+
+Příkaz očekává právě dva argumenty.
+První specifikuje cestu/název souboru, který má být zkopírovaný.
+Druhý argument udává cestu destinace a~název kopie.
 
 \subsubsection{\texttt{defrag}}\label{sec:defrag}
 
+Provádí defragmentaci specifikovaného souboru.
+
+\texttt{\$ defrag file}
+
+Příkaz očekává právě jeden argument, kterým je cesta/název souboru určeného pro defragmentaci.
+
 \subsubsection{\texttt{exit}}\label{sec:exit}
+
+Ukončí program.
+
+\texttt{\$ exit}
+
+\texttt{\$ exit code}
+
+Při spuštění příkazu \texttt{exit} bez argumentu, program je ukončen s~návratovou hodnotou \texttt{0}.
+Použitím volitelného argumentu lze specifikovat jinou návratovou hodnotu programu (modulo 256).
 
 \subsubsection{\texttt{format}}\label{sec:format}
 
+Provádí formátování souborového systému.
+Tento příkaz bývá prvním, který musí být proveden.
+
+\texttt{\$ format size}
+
+Příkaz očekává právě jeden argument, který udává velikost souborového systému.
+
+Očekávané jednotky jsou:
+
+- \texttt{B} (Byte)
+- \texttt{kB} (Kilobyte)
+- \texttt{MB} (Megabyte)
+- \texttt{GB} (Gygabyte)
+
+Maximální velikost souborového systému je \texttt{1GB} a~minimální jsou \texttt{2kB}.
+
 \subsubsection{\texttt{help}}\label{sec:help}
+
+Vypíše základní informace o~všech příkazech.
+
+\texttt{\$ help}
+
+Příkaz neočekává žádné argumenty.
 
 \subsubsection{\texttt{incp}}\label{sec:incp}
 
+Vytvoří kopii souboru z~hostitelského zařízení do virtuálního souborového systému.
+
+\texttt{\$ incp source destination}
+
+Funkce příkazu je stejná jako příkaz \texttt{cp}.
+Zdrojový soubor se musí nacházet na hostitelském zařízení.
+
 \subsubsection{\texttt{info}}\label{sec:info}
+
+Vypíše informace o~adresáři nebo souboru.
+
+\texttt{\$ info item}
+
+Příkaz očekává právě jeden argument, kterým je cesta/název souboru či adresáže.
 
 \subsubsection{\texttt{load}}\label{sec:load}
 
+Načte soubor z~hostitelského zařízení a~provede v~něm vypsané příkazy.
+
+\texttt{\$ load file}
+
+Příkaz očekává právě jeden argument specifikující cestu/název souboru na hostitelském zařízení.
+
 \subsubsection{\texttt{ls}}\label{sec:ls}
+
+Vypíše obsah adresáře.
+
+\texttt{\$ ls}
+
+\texttt{\$ ls path}
+
+\texttt{\$ ls -l path}
+
+\texttt{\$ ls -a path}
+
+\texttt{\$ ls -la path}
+
+Pokud je příkaz proveden bez argumentů, vypíše viditelné položky aktuálního adresáře.
+Je možné poskytnout argument cesty adresáře pro vypsání.
+
+Přepínač \texttt{-l} vypíše obsah adresáře v~seznamovém formátu.
+
+Přepínač \texttt{-a} vypíše také schované položky (začínající tečkou).
 
 \subsubsection{\texttt{mkdir}}\label{sec:mkdir}
 
+Vytvoří nový adresář.
+
+\texttt{\$ mkdir path}
+
+Příkaz očekává právě jeden argument s~cestou/názvem nového adresáře.
+
 \subsubsection{\texttt{mv}}\label{sec:mv}
+
+Přesune či přejmenuje soubor.
+
+\texttt{\$ mv source destination}
+
+Příkaz očekává právě dva argumenty. Tyto argumenty jsou stejné jako u~příkazu \texttt{cp}.
 
 \subsubsection{\texttt{outcp}}\label{sec:outcp}
 
+Vytvoří kopii souboru z~virtuálního souborového systému do hostitelského zařízení.
+
+\texttt{\$ outcp source destination}
+
+Funkce příkazu je stejná jako příkaz \texttt{cp}.
+Cílový soubor bude vytvořen na hostitelském zařízení.
+
 \subsubsection{\texttt{pwd}}\label{sec:pwd}
+
+Vypíše cestu do aktuálního adresáře.
+
+\texttt{\$ pwd}
+
+Příkaz neočekává žádné argumenty.
 
 \subsubsection{\texttt{rm}}\label{sec:rm}
 
+Odstraní soubor ze souborového systému.
+
+\texttt{\$ rm file}
+
+Příkaz očekává právě jeden argument s~cestou/názvem souboru k~odstranění.
+
 \subsubsection{\texttt{rmdir}}\label{sec:rmdir}
+
+Odstraní prázdný adresář ze souborového systému.
+
+\texttt{\$ rmdir directory}
+
+Příkaz očekává právě jeden argument s~cestou/názvem prázdného adresáře k odstranění.
 
 \section{Závěr}
 
