@@ -1,5 +1,7 @@
 \documentclass[12pt]{article}
 
+\usepackage[a4paper, margin=1in]{geometry}
+
 \usepackage[czech]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
@@ -12,17 +14,22 @@
 \usepackage{longtable}
 \usepackage[hidelinks]{hyperref}
 \usepackage{parskip}
+\usepackage{titling}
 
 \author{\textbf{Tomáš Tobrman}}
 \title{Semestrální práce \textbf{KIV/ZOS}}
 \date{}
 
 \renewcommand*\contentsname{Obsah}
+\renewcommand\maketitlehooka{\null\mbox{}\vfill}
+\renewcommand\maketitlehookd{\vfill\null}
 
 \begin{document}
 
+\begin{titlingpage}
 \maketitle
 \thispagestyle{empty}
+\end{titlingpage}
 \newpage
 
 \tableofcontents
@@ -65,14 +72,12 @@ Příkaz očekává vždy jeden argument, který je cestou k~souboru, jehož obs
 
 Změní cestu aktuálního pracovního adresáře.
 
-\texttt{\$ cd path}
-
-\texttt{\$ cd \/}
-
+\texttt{\$ cd path}\qquad
+\texttt{\$ cd /}\qquad
 \texttt{\$ cd}
 
 Příkaz očekává až jeden argument, který odpovídá cestě do adresáře.
-Pokud není poskytnuta cesta, pracovní adresář je změněn na domácí složku uživatele (v~tomto případě kořenový adresář \texttt{\/}).
+Pokud není pos\-kytnuta cesta, pracovní adresář je změněn na domácí složku uživatele (v~tomto případě kořenový adresář \texttt{/}).
 
 \subsubsection{\texttt{clear}}\label{sec:clear}
 
@@ -104,8 +109,7 @@ Příkaz očekává právě jeden argument, kterým je cesta/název souboru urč
 
 Ukončí program.
 
-\texttt{\$ exit}
-
+\texttt{\$ exit}\qquad
 \texttt{\$ exit code}
 
 Při spuštění příkazu \texttt{exit} bez argumentu, program je ukončen s~návratovou hodnotou \texttt{0}.
@@ -122,10 +126,10 @@ Příkaz očekává právě jeden argument, který udává velikost souborového
 
 Očekávané jednotky jsou:
 
-- \texttt{B} (Byte)
-- \texttt{kB} (Kilobyte)
-- \texttt{MB} (Megabyte)
-- \texttt{GB} (Gygabyte)
+\texttt{B} (Byte),
+\texttt{kB} (Kilobyte),
+\texttt{MB} (Megabyte),
+\texttt{GB} (Gygabyte)
 
 Maximální velikost souborového systému je \texttt{1GB} a~minimální jsou \texttt{2kB}.
 
@@ -136,6 +140,8 @@ Vypíše základní informace o~všech příkazech.
 \texttt{\$ help}
 
 Příkaz neočekává žádné argumenty.
+
+\newpage
 
 \subsubsection{\texttt{incp}}\label{sec:incp}
 
@@ -166,14 +172,10 @@ Příkaz očekává právě jeden argument specifikující cestu/název souboru 
 
 Vypíše obsah adresáře.
 
-\texttt{\$ ls}
-
-\texttt{\$ ls path}
-
-\texttt{\$ ls -l path}
-
-\texttt{\$ ls -a path}
-
+\texttt{\$ ls}\qquad
+\texttt{\$ ls path}\qquad
+\texttt{\$ ls -l path}\qquad
+\texttt{\$ ls -a path}\qquad
 \texttt{\$ ls -la path}
 
 Pokud je příkaz proveden bez argumentů, vypíše viditelné položky aktuálního adresáře.
